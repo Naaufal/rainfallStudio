@@ -1,0 +1,213 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #0D0C10;
+  --color-ink-2: #16151B;
+  --color-bone: #EDE8DD;
+  --color-hairline: rgba(237, 232, 221, 0.14);
+  --color-periwinkle: #A3A8C3;
+  --color-mauve: #4A3638;
+  --color-rose: #E8A5A0;
+  --color-mustard: #E0B424;
+
+  --font-display-condensed: var(--font-big-shoulders), sans-serif;
+  --font-display-serif: var(--font-instrument-serif), Georgia, serif;
+  --font-sans: var(--font-familjen), system-ui, sans-serif;
+  --font-mono: var(--font-mono), monospace;
+}
+
+:root {
+  --color-ink: #0D0C10;
+  --color-ink-2: #16151B;
+  --color-bone: #EDE8DD;
+  --color-hairline: rgba(237, 232, 221, 0.14);
+  --color-periwinkle: #A3A8C3;
+  --color-mauve: #4A3638;
+  --color-rose: #E8A5A0;
+  --color-mustard: #E0B424;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 4.5rem;
+  background-color: #0D0C10;
+  color: #EDE8DD;
+  font-family: var(--font-familjen), system-ui, sans-serif;
+}
+
+body {
+  background-color: #0D0C10;
+  color: #EDE8DD;
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+  border-radius: 0px !important;
+}
+
+/* Static Film Grain Overlay */
+.film-grain {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 99;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* Hard Offset Button Shadow */
+.btn-poster {
+  position: relative;
+  border-radius: 0px;
+  box-shadow: 4px 4px 0 0 #A3A8C3;
+  transition: transform 120ms ease, box-shadow 120ms ease, background-color 120ms ease;
+}
+
+.btn-poster:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 5px 5px 0 0 #A3A8C3;
+}
+
+.btn-poster:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 0 #A3A8C3;
+}
+
+.btn-poster-dark {
+  position: relative;
+  border-radius: 0px;
+  box-shadow: 4px 4px 0 0 #EDE8DD;
+  transition: transform 120ms ease, box-shadow 120ms ease;
+}
+
+.btn-poster-dark:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 5px 5px 0 0 #EDE8DD;
+}
+
+.btn-poster-dark:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 0 #EDE8DD;
+}
+
+/* Hairline Dividers */
+.hairline-b {
+  border-bottom: 1px solid rgba(237, 232, 221, 0.14);
+}
+
+.hairline-t {
+  border-top: 1px solid rgba(237, 232, 221, 0.14);
+}
+
+.hairline-l {
+  border-left: 1px solid rgba(237, 232, 221, 0.14);
+}
+
+.hairline-r {
+  border-right: 1px solid rgba(237, 232, 221, 0.14);
+}
+
+.hairline-all {
+  border: 1px solid rgba(237, 232, 221, 0.14);
+}
+
+/* Registration Cross Marks */
+.reg-cross {
+  position: relative;
+}
+
+.reg-cross::before {
+  content: "+";
+  position: absolute;
+  top: -8px;
+  left: -6px;
+  font-family: var(--font-mono), monospace;
+  font-size: 14px;
+  color: rgba(237, 232, 221, 0.4);
+  pointer-events: none;
+}
+
+/* Typography Utility Classes */
+.font-condensed {
+  font-family: var(--font-big-shoulders), sans-serif;
+}
+
+.font-serif-italic {
+  font-family: var(--font-instrument-serif), Georgia, serif;
+  font-style: italic;
+}
+
+.font-serif-normal {
+  font-family: var(--font-instrument-serif), Georgia, serif;
+}
+
+.font-mono-code {
+  font-family: var(--font-mono), monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* Touch Action: faster tap response on mobile */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button, a, [role="button"] {
+  touch-action: manipulation;
+}
+
+/* Fade In Animation */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 150ms ease-out forwards;
+}
+
+/* Marquee Text Strip */
+@keyframes marqueeSlow {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  animation: marqueeSlow 32s linear infinite;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+/* Clip-path Reveal Animation (Always visible fallback) */
+.clip-wipe-hidden,
+.clip-wipe-visible {
+  opacity: 1;
+  clip-path: none;
+  transform: none;
+}
+
+/* Reduced motion overrides */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  
+  .clip-wipe-hidden {
+    clip-path: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .marquee-track {
+    animation-play-state: paused !important;
+  }
+}
