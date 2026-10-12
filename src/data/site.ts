@@ -1,4 +1,5 @@
 export type StyleId = "normal" | "gta";
+export type FramingId = "headshot" | "half-body" | "full-body";
 
 export interface StyleItem {
   id: StyleId;
@@ -6,25 +7,14 @@ export interface StyleItem {
   punchline: string;
   description: string;
   bestFor: string[];
-  accentColor: string;
 }
-
-export type FramingId = "headshot" | "half-body" | "full-body";
 
 export interface FramingItem {
   id: FramingId;
   name: string;
   description: string;
   price: number;
-}
-
-export interface TestimonialItem {
-  id: string;
-  name: string;
-  handle: string;
-  text: string;
-  style: string;
-  isDummy: boolean;
+  badge?: string;
 }
 
 export interface FaqItem {
@@ -38,34 +28,42 @@ export interface StepItem {
   description: string;
 }
 
-export const site = {
+export const siteConfig = {
   brand: "Rainfall Studio",
-  tagline: "Fotomu, jadi karya vektor yang nggak ada duanya.",
-  subtagline: "Bikin foto profil, kado, atau kontenmu makin stand-out dengan ilustrasi vector art estetik & dramatis.",
-  instagram: "r.rainfall",
-  whatsapp: "6283895285804",
-  turnaround: "Kurang dari 24 jam",
-  revisions: "3x revisi",
-  fileFormats: ["JPEG", "PNG"],
+  shortDescriptor: "Custom semi-realistic vector portrait, dibuat khusus dari foto pilihanmu.",
+  headline: "Every face has a story.",
+  subheadline:
+    "Ubah foto favoritmu menjadi ilustrasi vector semi-realistis yang personal dan dibuat khusus untukmu.",
+  tagline: "Your Moments, Drawn to Life.",
+  whatsappDisplay: "+62 838-9528-5804",
+  whatsappNumber: "6283895285804",
+  instagramUrl: "https://instagram.com/r.rainfall",
+  instagramHandle: "@r.rainfall",
+  turnaround: "24 jam (estimasi)",
+  revisions: "Maksimal 3 kali revisi kecil",
+  fileFormats: "PNG & JPG resolusi tinggi",
   payment: "QRIS",
+  basePriceNote: "Harga dasar untuk satu orang",
+  extraPersonNote:
+    "Ingin menambahkan orang lain? Hubungi kami untuk konfirmasi biaya tambahan.",
 };
 
 export const styles: StyleItem[] = [
   {
     id: "normal",
     name: "Vector Normal",
-    punchline: "Halus, estetik, penuh detail.",
-    description: "Shading lembut dan bertahap, warna kalem, detail wajah dan mata dirender rapi.",
-    bestFor: ["Foto profil", "Kado", "Couple"],
-    accentColor: "#E8A5A0",
+    punchline: "Halus, estetik, dan shading bertahap lembut",
+    description:
+      "Gaya rendering halus dengan gradasi warna lembut yang mempertahankan kehangatan ekspresi wajah asli secara artistik.",
+    bestFor: ["Foto profil estetik", "Kado ulang tahun & anniversary", "Potret kenang-kenangan"],
   },
   {
     id: "gta",
     name: "GTA Style",
-    punchline: "Tegas, kontras, dramatis.",
-    description: "Outline tebal, blok warna kuat, bayangan tegas. Cocok untuk yang mau tampil beda.",
-    bestFor: ["PP yang nonjol", "Konten", "Merch"],
-    accentColor: "#E0B424",
+    punchline: "Tegas, kontras, dan outline dramatis",
+    description:
+      "Gaya tracing berani dengan kontur tegas, blok bayangan dramatis, dan karakter kuat ala digital artwork aksi legendaris.",
+    bestFor: ["Avatar personal berkarakter", "Konten media sosial", "Tampilan standout & eksentrik"],
   },
 ];
 
@@ -73,113 +71,130 @@ export const framings: FramingItem[] = [
   {
     id: "headshot",
     name: "Headshot",
-    description: "Wajah hingga bahu",
+    description: "Kepala hingga bahu",
     price: 35000,
+    badge: "Paling Populer",
   },
   {
     id: "half-body",
-    name: "Half body",
-    description: "Kepala hingga pinggang/perut",
+    name: "Half Body",
+    description: "Ilustrasi setengah badan",
     price: 50000,
+    badge: "Rekomendasi",
   },
   {
     id: "full-body",
-    name: "Full body",
-    description: "Seluruh badan dari kepala hingga kaki",
+    name: "Full Body",
+    description: "Ilustrasi seluruh badan",
     price: 75000,
+    badge: "Detail Lengkap",
   },
 ];
 
-export const addons = {
-  extraPerson: null as number | null, // TODO: [ISI] biaya tambahan per orang bila sudah ditentukan
-  customBackground: null as number | null, // TODO: [ISI] biaya background khusus bila sudah ditentukan
-};
-
-export const testimonials: TestimonialItem[] = [
+export const processSteps: StepItem[] = [
   {
-    id: "1",
-    name: "Dika",
-    handle: "@dika_prs",
-    text: "Hasil vektornya gokil banget! Shading mata sama rambutnya rapi parah. Cocok banget buat kado ultah pacar.",
-    style: "Vector Normal",
-    isDummy: true,
+    num: "01",
+    title: "PILIH FRAMING",
+    description:
+      "Tentukan jenis framing yang kamu inginkan: Headshot (Rp35.000), Half Body (Rp50.000), atau Full Body (Rp75.000).",
   },
   {
-    id: "2",
-    name: "Rian Santos",
-    handle: "@rian_st",
-    text: "GTA style-nya beneran kerasa vibe San Andreas-nya! PP Instagram langsung kelihatan beda dari yang lain.",
-    style: "GTA Style",
-    isDummy: true,
+    num: "02",
+    title: "HUBUNGI WHATSAPP & KIRIM FOTO",
+    description:
+      "Klik tombol WhatsApp untuk langsung membuka chat. Kirimkan foto referensimu yang memiliki pencahayaan cukup dan wajah jelas.",
   },
   {
-    id: "3",
-    name: "Siska & Andi",
-    handle: "@siska_a",
-    text: "Pengerjaannya cepet banget belum ada 24 jam udah dapet file PNG mulus tanpa background. Recommended!",
-    style: "Vector Normal",
-    isDummy: true,
+    num: "03",
+    title: "KONFIRMASI ORANG TAMBAHAN",
+    description:
+      "Jika karya memuat lebih dari satu orang, kami akan mengonfirmasi detail biaya tambahan secara transparan melalui WhatsApp.",
+  },
+  {
+    num: "04",
+    title: "PEMBAYARAN VIA QRIS",
+    description:
+      "Lakukan pembayaran aman dan mudah memakai QRIS (mendukung GoPay, OVO, Dana, ShopeePay, serta seluruh m-banking).",
+  },
+  {
+    num: "05",
+    title: "PENGERJAAN 24 JAM",
+    description:
+      "Karya diproses secara teliti dengan estimasi waktu pengerjaan 24 jam setelah rincian dan konfirmasi disepakati.",
+  },
+  {
+    num: "06",
+    title: "MAKS. 3X REVISI KECIL",
+    description:
+      "Kamu mendapatkan kesempatan maksimal 3 kali revisi kecil (seperti penyesuaian warna atau kerapian garis) agar hasilnya memuaskan.",
+  },
+  {
+    num: "07",
+    title: "TERIMA FILE RESOLUSI TINGGI",
+    description:
+      "Hasil akhir diserahkan berupa file digital PNG (transparan) dan JPG resolusi tinggi siap cetak atau unggah.",
   },
 ];
 
 export const faqs: FaqItem[] = [
   {
-    q: "Foto seperti apa yang bagus untuk diproses?",
-    a: "Foto idealnya memiliki pencahayaan terang, tidak blur, dan ekspresi wajah terlihat jelas dengan resolusi tinggi. Semakin jelas fotomu, semakin maksimal detail vektor yang dihasilkan.",
+    q: "Apa pilihan jenis portrait yang tersedia?",
+    a: "Rainfall Studio menyediakan tiga opsi framing vector portrait: Headshot (kepala hingga bahu), Half Body (setengah badan), dan Full Body (seluruh badan dari ujung kepala hingga kaki).",
   },
   {
-    q: "Berapa lama proses pengerjaannya?",
-    a: "Pengerjaan selesai dalam waktu kurang dari 24 jam setelah foto dan bukti pembayaran kami terima.",
+    q: "Berapa harga dasarnya?",
+    a: "Harga dasar untuk satu orang adalah Rp35.000 untuk Headshot, Rp50.000 untuk Half Body, dan Rp75.000 untuk Full Body.",
   },
   {
-    q: "Bisa revisi? Berapa kali?",
-    a: "Bisa! Setiap pesanan sudah termasuk jatah 3x revisi minor (misalnya penyesuaian warna atau kerapian garis).",
+    q: "Bisa menggambar lebih dari satu orang dalam satu karya?",
+    a: "Bisa! Kamu dapat memesan karya untuk pasangan, keluarga, atau teman dalam satu frame dengan biaya tambahan. Nominal biaya tambahan akan dikonfirmasikan langsung melalui WhatsApp.",
   },
   {
-    q: "Dapat file format apa saja?",
-    a: "Kamu akan mendapatkan file resolusi tinggi format JPEG (dengan background) dan PNG transparan (tanpa background).",
+    q: "Berapa lama estimasi pengerjaannya?",
+    a: "Estimasi pengerjaan adalah 24 jam setelah detail pesanan dan pembayaran dikonfirmasi.",
   },
   {
-    q: "Apa bedanya Headshot, Half Body, dan Full Body?",
-    a: "Headshot mencakup bagian kepala hingga bahu; Half Body dari kepala hingga pinggang; dan Full Body mencakup seluruh badan dari kepala hingga kaki.",
+    q: "Apakah boleh mengajukan revisi?",
+    a: "Tersedia jatah maksimal 3 kali revisi kecil untuk memastikan hasil akhir sesuai preferensimu tanpa mengubah konsep atau pose foto awal.",
   },
   {
-    q: "Bisa lebih dari satu orang dalam satu foto?",
-    a: "Bisa banget! Tinggal pilih jumlah orang di form pesanan. Biaya tambahan dikonfirmasi via WhatsApp.",
+    q: "Format file apa yang akan saya terima?",
+    a: "Kamu akan menerima file digital resolusi tinggi berformat JPG (dengan latar/warna) dan PNG (tanpa latar/transparan) yang tajam untuk keperluan digital maupun cetak.",
   },
   {
-    q: "Boleh dipakai untuk keperluan komersial?",
-    a: "Harga tertera untuk penggunaan pribadi. Untuk keperluan komersial (re-sell merchandise/logo bisnis), silakan konsultasikan lewat WhatsApp.",
+    q: "Bagaimana cara melakukan pembayaran?",
+    a: "Pembayaran dilakukan menggunakan QRIS yang praktis dan mendukung semua e-wallet serta seluruh mobile banking di Indonesia.",
   },
   {
-    q: "Bagaimana cara pembayarannya?",
-    a: "Pembayaran sangat mudah menggunakan QRIS (mendukung GoPay, OVO, ShopeePay, DANA, BCA, Mandiri, dan m-Banking lainnya).",
-  },
-  {
-    q: "Apakah hasil karya saya akan dipublikasikan?",
-    a: "Karya hanya diunggah ke portofolio atau media sosial kami jika kamu memberikan izin.",
+    q: "Bagaimana cara memulai pemesanan?",
+    a: "Pilih paket framing yang kamu inginkan, lalu klik tombol 'Pesan via WhatsApp'. Pesan awal akan terisi otomatis dan kamu cukup melampirkan foto yang ingin digambar.",
   },
 ];
 
-export const steps: StepItem[] = [
-  {
-    num: "01",
-    title: "Pilih Gaya & Isi Form",
-    description: "Tentukan gaya favoritmu (Vector Normal / GTA Style) dan lengkapi detail pesanan.",
-  },
-  {
-    num: "02",
-    title: "Kirim Foto via WhatsApp",
-    description: "Klik tombol 'Lanjut ke WhatsApp' lalu kirimkan foto terbaikmu ke chat admin.",
-  },
-  {
-    num: "03",
-    title: "Bayar via QRIS",
-    description: "Lakukan pembayaran mudah dan cepat memakai QRIS setelah rincian disepakati.",
-  },
-  {
-    num: "04",
-    title: "Terima Hasil & Revisi",
-    description: "File dikirim < 24 jam. Kamu juga mendapat jatah 3x revisi bila diperlukan.",
-  },
-];
+export const aboutContent = {
+  quote:
+    "Di Rainfall Studio, foto favoritmu diubah jadi vector portrait semi-realistis yang terasa lebih personal. Mau headshot simpel, half body, atau ilustrasi full body, kamu bisa memilih gaya framing yang paling cocok. Setiap karya dibuat berdasarkan foto pilihanmu—buat jadi kenang-kenangan, hadiah, atau sekadar punya versi ilustrasi dari dirimu sendiri.",
+  descriptor: "Custom semi-realistic vector portraits, made from your favorite photos.",
+  tagline: "Your Moments, Drawn to Life.",
+};
+
+// Helper for generating standard WhatsApp URLs
+export function getWhatsAppUrl(customMessage?: string): string {
+  const phone = siteConfig.whatsappNumber;
+  const defaultMsg =
+    "Halo Rainfall Studio, saya tertarik dengan jasa custom vector portrait. Saya ingin tanya tentang pilihan layanan dan pemesanan.";
+  const msg = customMessage || defaultMsg;
+  return `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+}
+
+export function getServiceWhatsAppUrl(serviceName: string, price: number): string {
+  const phone = siteConfig.whatsappNumber;
+  const formattedPrice = new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+    maximumFractionDigits: 0,
+  }).format(price);
+
+  const msg = `Halo Rainfall Studio, saya tertarik dengan layanan ${serviceName} seharga ${formattedPrice} untuk satu orang. Saya ingin bertanya tentang pemesanan.`;
+  return `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+}

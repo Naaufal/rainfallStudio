@@ -3,168 +3,195 @@
 import { useState } from "react";
 import Image from "next/image";
 import { PortfolioItem } from "@/types";
-import { StyleId } from "@/data/site";
 import { Lightbox } from "./Lightbox";
+import { useInView } from "@/hooks/useInView";
+import { Maximize2 } from "lucide-react";
 
 interface PortfolioProps {
   items: PortfolioItem[];
-  onActiveStyleChange?: (style: StyleId | "all") => void;
 }
 
-export function Portfolio({ items, onActiveStyleChange }: PortfolioProps) {
-  const [activeFilter, setActiveFilter] = useState<StyleId | "all">("all");
+type FilterCategory = "all" | "headshot" | "half-body" | "full-body";
+
+export function Portfolio({ items }: PortfolioProps) {
+  const [activeFilter, setActiveFilter] = useState<FilterCategory>("all");
   const [selectedItem, setSelectedItem] = useState<PortfolioItem | null>(null);
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const [isHovered, setIsHovered] = useState(false);
+  const { ref: sectionRef, isInView } = useInView({ threshold: 0.1 });
 
-  const handleFilterChange = (filter: StyleId | "all") => {
-    setActiveFilter(filter);
-    if (onActiveStyleChange) {
-      onActiveStyleChange(filter);
-    }
-  };
-
-  const filteredItems = items.filter(
-    (item) => activeFilter === "all" || item.style === activeFilter
-  );
-
-  // Desktop cursor follower "LIHAT"
-  const handleMouseMove = (e: React.MouseEvent) => {
-    setMousePos({ x: e.clientX, y: e.clientY });
-  };
+  const filteredItems = items.filter((item) => {
+    if (activeFilter === "all") return true;
+    return item.framing === activeFilter;
+  });
 
   return (
     <section
       id="portofolio"
-      onMouseMove={handleMouseMove}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      className="py-20 md:py-28 relative border-b border-[#EDE8DD]/14 scroll-mt-16"
+      ref={sectionRef}
+      className="py-16 md:py-24 relative border-b border-[#2A2826] scroll-mt-20 bg-[#121110]"
     >
-      {/* Desktop Floating "LIHAT" Cursor Label */}
-      {isHovered && (
-        <div
-          aria-hidden="true"
-          className="fixed pointer-events-none z-40 hidden lg:block px-3 py-1 bg-[#EDE8DD] text-[#0D0C10] font-mono text-[10px] font-bold tracking-widest uppercase border border-[#0D0C10] transition-transform duration-75"
-          style={{
-            left: `${mousePos.x + 12}px`,
-            top: `${mousePos.y + 12}px`,
-          }}
-        >
-          [ LIHAT ]
-        </div>
-      )}
-
-      {/* Registration Cross Marks */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 relative">
-        <div className="reg-cross absolute top-0 left-4" />
-        <div className="reg-cross absolute top-0 right-4" />
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Header & Filter Text Tabs with Sliding Underline */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-12 border-b border-[#EDE8DD]/14 pb-8">
-          
-          <div className="space-y-2">
-            <p className="font-mono text-xs tracking-widest text-[#EDE8DD]/60 uppercase">
-              NO. 03 — GALERI HASIL KARYA
-            </p>
-            <h2 className="font-condensed font-black text-4xl sm:text-6xl text-[#EDE8DD] uppercase tracking-tighter">
-              PORTOFOLIO TERPILIH.
+        {/* Curatorial Section Header */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 pb-6 border-b border-[#2A2826]">
+          <div className="space-y-2 max-w-xl">
+            <div className="flex items-center gap-2 text-xs text-[#A39E98] tracking-wider uppercase font-medium">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#C45439]" />
+              <span>Arsip Karya Studio · Koleksi Terpilih</span>
+            </div>
+            
+            <h2 className="font-display font-extrabold text-2xl sm:text-4xl text-[#F7F4EE] tracking-tight uppercase">
+              KATALOG KARYA PILIHAN.
             </h2>
+            
+            <p className="font-serif italic text-sm sm:text-base text-[#A39E98] leading-relaxed">
+              Kompilasi potret vektor buatan tangan. Dikerjakan garis demi garis dengan kedalaman semi-realistis dari foto kiriman pelanggan.
+            </p>
           </div>
 
-          {/* Filter Text Tabs */}
-          <div className="flex items-center gap-6 font-mono text-xs tracking-widest">
+          {/* Refined Framing Filter Pills */}
+          <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 text-xs">
             <button
               type="button"
-              onClick={() => handleFilterChange("all")}
+              onClick={() => setActiveFilter("all")}
               aria-pressed={activeFilter === "all"}
-              className={`relative py-2 uppercase transition-colors ${
-                activeFilter === "all" ? "text-[#EDE8DD] font-bold" : "text-[#EDE8DD]/50 hover:text-[#EDE8DD]"
+              className={`px-3.5 py-2 transition-all font-medium uppercase tracking-wider text-[11px] border ${
+                activeFilter === "all"
+                  ? "bg-[#C45439] text-[#FFFFFF] border-[#C45439] shadow-sm font-semibold"
+                  : "bg-[#1A1918] text-[#A39E98] border-[#2A2826] hover:text-[#F7F4EE] hover:border-[#3D3936]"
               }`}
             >
-              SEMUA ({items.length})
-              {activeFilter === "all" && (
-                <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#EDE8DD]" />
-              )}
+              Semua ({items.length})
             </button>
 
             <button
               type="button"
-              onClick={() => handleFilterChange("normal")}
-              aria-pressed={activeFilter === "normal"}
-              className={`relative py-2 uppercase transition-colors ${
-                activeFilter === "normal" ? "text-[#E8A5A0] font-bold" : "text-[#EDE8DD]/50 hover:text-[#E8A5A0]"
+              onClick={() => setActiveFilter("headshot")}
+              aria-pressed={activeFilter === "headshot"}
+              className={`px-3.5 py-2 transition-all font-medium uppercase tracking-wider text-[11px] border ${
+                activeFilter === "headshot"
+                  ? "bg-[#C45439] text-[#FFFFFF] border-[#C45439] shadow-sm font-semibold"
+                  : "bg-[#1A1918] text-[#A39E98] border-[#2A2826] hover:text-[#F7F4EE] hover:border-[#3D3936]"
               }`}
             >
-              NORMAL
-              {activeFilter === "normal" && (
-                <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#E8A5A0]" />
-              )}
+              Headshot
             </button>
 
             <button
               type="button"
-              onClick={() => handleFilterChange("gta")}
-              aria-pressed={activeFilter === "gta"}
-              className={`relative py-2 uppercase transition-colors ${
-                activeFilter === "gta" ? "text-[#E0B424] font-bold" : "text-[#EDE8DD]/50 hover:text-[#E0B424]"
+              onClick={() => setActiveFilter("half-body")}
+              aria-pressed={activeFilter === "half-body"}
+              className={`px-3.5 py-2 transition-all font-medium uppercase tracking-wider text-[11px] border ${
+                activeFilter === "half-body"
+                  ? "bg-[#C45439] text-[#FFFFFF] border-[#C45439] shadow-sm font-semibold"
+                  : "bg-[#1A1918] text-[#A39E98] border-[#2A2826] hover:text-[#F7F4EE] hover:border-[#3D3936]"
               }`}
             >
-              GTA STYLE
-              {activeFilter === "gta" && (
-                <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#E0B424]" />
-              )}
+              Half Body
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setActiveFilter("full-body")}
+              aria-pressed={activeFilter === "full-body"}
+              className={`px-3.5 py-2 transition-all font-medium uppercase tracking-wider text-[11px] border ${
+                activeFilter === "full-body"
+                  ? "bg-[#C45439] text-[#FFFFFF] border-[#C45439] shadow-sm font-semibold"
+                  : "bg-[#1A1918] text-[#A39E98] border-[#2A2826] hover:text-[#F7F4EE] hover:border-[#3D3936]"
+              }`}
+            >
+              Full Body
             </button>
           </div>
-
         </div>
 
-        {/* Irregular Editorial Grid (vaying column spans) */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-6">
+        {/* Compact Exhibition Grid:
+            - Desktop: 4 columns (~250-280px), 8 artworks visible at once in standard view!
+            - Mobile: 2 columns with calibrated gap (10-12px)
+            - Staggered entrance timing
+        */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-5">
           {filteredItems.map((item, index) => {
-            // Editorial size distribution: 1st item spans 7 cols on desktop, 2nd spans 5 cols, others 4 cols
-            const colSpanClass =
-              index % 5 === 0
-                ? "lg:col-span-7"
-                : index % 5 === 1
-                ? "lg:col-span-5"
-                : "lg:col-span-4";
-
-            const isNormal = item.style === "normal";
+            const isGta = item.style === "gta";
+            const delayMs = (index % 4) * 70;
 
             return (
-              <button
+              <div
                 key={item.id}
-                type="button"
                 onClick={() => setSelectedItem(item)}
-                aria-label={`Lihat detail ${item.alt}`}
-                className={`${colSpanClass} group cursor-pointer relative bg-[#16151B] border border-[#EDE8DD]/14 overflow-hidden flex flex-col justify-between text-left touch-manipulation w-full`}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    setSelectedItem(item);
+                  }
+                }}
+                role="button"
+                tabIndex={0}
+                aria-label={`Buka pratinjau detail ${item.title}`}
+                style={{
+                  transitionDelay: `${delayMs}ms`,
+                }}
+                className={`group cursor-pointer bg-[#1A1918] border border-[#2A2826] hover:border-[#C45439]/70 transition-all duration-300 flex flex-col justify-between overflow-hidden focus:outline-none focus:ring-1 focus:ring-[#C45439] ${
+                  isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+                }`}
               >
-                {/* Artwork Box */}
-                <div className="relative w-full aspect-[4/3] sm:aspect-[3/4] overflow-hidden">
+                {/* Artwork Thumbnail Frame: disciplined aspect ratio preserving portrait face focus */}
+                <div className="relative w-full aspect-[4/5] bg-[#121110] overflow-hidden">
                   <Image
                     src={item.src}
                     alt={item.alt}
                     fill
-                    sizes="(max-width: 768px) 100vw, 600px"
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    sizes="(max-width: 640px) 48vw, (max-width: 1024px) 32vw, 280px"
+                    className="object-cover object-top group-hover:scale-105 transition-transform duration-500 ease-out"
                   />
-                  <div className="absolute inset-0 bg-[#0D0C10]/20 group-hover:bg-transparent transition-colors" />
+
+                  {/* Micro Index Plate in top corner */}
+                  <div className="absolute top-2.5 left-2.5 bg-[#121110]/85 backdrop-blur-xs border border-[#2A2826] px-2 py-0.5 text-[10px] font-medium text-[#A39E98] tracking-wider uppercase">
+                    Plat {String(index + 1).padStart(2, "0")}
+                  </div>
+
+                  {/* Hover Magnify Badge */}
+                  <div className="absolute inset-0 bg-[#121110]/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none">
+                    <span className="px-3 py-1.5 bg-[#1A1918]/95 border border-[#C45439] text-[#F7F4EE] flex items-center gap-1.5 text-xs tracking-wider uppercase font-medium shadow-lg">
+                      <Maximize2 className="w-3.5 h-3.5 text-[#C45439]" />
+                      <span>Perbesar</span>
+                    </span>
+                  </div>
                 </div>
 
-                {/* Mono Caption Bar */}
-                <div className="p-4 bg-[#0D0C10] border-t border-[#EDE8DD]/14 flex items-center justify-between font-mono text-xs tracking-wider">
-                  <span className="text-[#EDE8DD]/60">NO. 0{index + 1}</span>
-                  <span className={isNormal ? "text-[#E8A5A0]" : "text-[#E0B424]"}>
-                    {item.styleLabel.toUpperCase()}
+                {/* Editorial Caption Plate */}
+                <div className="p-3 bg-[#1A1918] border-t border-[#2A2826] flex items-center justify-between text-xs leading-snug">
+                  <div className="truncate mr-2">
+                    <h3 className="font-serif italic text-sm text-[#F7F4EE] group-hover:text-[#C45439] transition-colors truncate">
+                      {item.title}
+                    </h3>
+                    <span className="text-[11px] text-[#A39E98] block mt-0.5">
+                      {item.framingLabel}
+                    </span>
+                  </div>
+
+                  <span
+                    className={`shrink-0 px-2 py-0.5 border text-[10px] font-semibold uppercase tracking-wider ${
+                      isGta
+                        ? "bg-[#242220] text-[#D4A359] border-[#D4A359]/30"
+                        : "bg-[#242220] text-[#F7F4EE] border-[#2A2826]"
+                    }`}
+                  >
+                    {isGta ? "GTA" : "Normal"}
                   </span>
                 </div>
-              </button>
+              </div>
             );
           })}
+        </div>
+
+        {/* Curatorial Subtext */}
+        <div className="mt-8 pt-4 border-t border-[#2A2826] flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-[#A39E98]">
+          <span className="font-serif italic">
+            Menampilkan {filteredItems.length} karya asli buatan tangan Rainfall Studio.
+          </span>
+          <span className="text-[#C45439] font-medium">
+            Ketuk gambar untuk melihat resolusi penuh & guratan detail.
+          </span>
         </div>
 
       </div>

@@ -1,92 +1,126 @@
 "use client";
 
-import { site } from "@/data/site";
-import { ArrowUpRight } from "lucide-react";
+import Link from "next/link";
+import { siteConfig, getWhatsAppUrl } from "@/data/site";
+import { MessageSquare, ArrowUp } from "lucide-react";
+import { InstagramIcon } from "./icons/InstagramIcon";
 
 export function Footer() {
   const currentYear = 2026;
-  const directWaUrl = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(
-    "Halo Rainfall Studio! Saya mau bertanya seputar pemesanan vector art."
-  )}`;
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
-    <footer id="kontak" className="relative pt-20 pb-12 border-t border-[#EDE8DD]/14 bg-[#0D0C10] overflow-hidden">
-      
-      {/* Registration Cross Marks */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 relative">
-        <div className="reg-cross absolute top-0 left-4" />
-        <div className="reg-cross absolute top-0 right-4" />
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
+    <footer id="kontak" className="pt-16 pb-12 bg-[#121110] text-[#F7F4EE] border-t border-[#2A2826] relative">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         
-        {/* Contact Banner */}
-        <div className="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-8 mb-20">
-          <div className="space-y-4 max-w-2xl">
-            <p className="font-mono text-xs tracking-widest text-[#EDE8DD]/60 uppercase">
-              NO. 08 — HUBUNGI KAMI
+        {/* Top Footer Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-10 items-start">
+          
+          {/* Brand Info */}
+          <div className="md:col-span-5 space-y-3.5">
+            <Link href="/" className="inline-block group">
+              <span className="font-display font-extrabold text-2xl sm:text-3xl tracking-tight text-[#F7F4EE] uppercase group-hover:text-[#C45439] transition-colors">
+                {siteConfig.brand}
+              </span>
+            </Link>
+            <p className="font-serif italic text-sm text-[#A39E98] max-w-sm leading-relaxed">
+              {siteConfig.shortDescriptor}
             </p>
-            <h2 className="font-condensed font-black text-4xl sm:text-7xl text-[#EDE8DD] uppercase tracking-tighter leading-none">
-              SIAP UBAH FOTOMU?
-            </h2>
-            <p className="font-sans text-base text-[#EDE8DD]/80">
-              Diskusi gratis via WhatsApp. Pengerjaan kurang dari 24 jam dengan jatah 3x revisi.
+            <p className="text-xs uppercase tracking-wider text-[#C45439] font-medium">
+              {siteConfig.tagline}
             </p>
           </div>
 
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full lg:w-auto">
-            <a
-              href={directWaUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-poster bg-[#EDE8DD] text-[#0D0C10] font-mono font-bold text-xs px-8 py-4 uppercase tracking-wider text-center inline-flex items-center justify-center gap-3 border border-[#0D0C10]"
-            >
-              <span>CHAT WHATSAPP</span>
-              <ArrowUpRight className="w-4 h-4" />
-            </a>
-
-            <a
-              href={`https://instagram.com/${site.instagram}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-mono text-xs tracking-widest text-[#EDE8DD] border border-[#EDE8DD]/30 hover:border-[#EDE8DD] px-6 py-4 text-center uppercase transition-colors"
-            >
-              INSTAGRAM @{site.instagram.toUpperCase()}
-            </a>
+          {/* Quick Links */}
+          <div className="md:col-span-3 space-y-3 text-xs">
+            <span className="text-[#F7F4EE] font-semibold tracking-wider uppercase block mb-3 font-display">
+              Navigasi Halaman
+            </span>
+            <ul className="space-y-2.5 text-[#A39E98]">
+              <li>
+                <a href="#portofolio" className="hover:text-[#F7F4EE] transition-colors">
+                  Katalog Karya
+                </a>
+              </li>
+              <li>
+                <a href="#layanan" className="hover:text-[#F7F4EE] transition-colors">
+                  Tarif & Spesifikasi
+                </a>
+              </li>
+              <li>
+                <a href="#alur" className="hover:text-[#F7F4EE] transition-colors">
+                  Alur Pemesanan
+                </a>
+              </li>
+              <li>
+                <a href="#tentang" className="hover:text-[#F7F4EE] transition-colors">
+                  Tentang Studio
+                </a>
+              </li>
+              <li>
+                <a href="#faq" className="hover:text-[#F7F4EE] transition-colors">
+                  Pertanyaan (FAQ)
+                </a>
+              </li>
+            </ul>
           </div>
+
+          {/* Contact Direct Links */}
+          <div className="md:col-span-4 space-y-3 text-xs">
+            <span className="text-[#F7F4EE] font-semibold tracking-wider uppercase block mb-3 font-display">
+              Kanal Resmi Pemesanan
+            </span>
+            <div className="space-y-3">
+              <a
+                href={getWhatsAppUrl()}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-3.5 p-3.5 bg-[#1A1918] border border-[#2A2826] hover:border-[#C45439] text-[#F7F4EE] transition-colors"
+              >
+                <MessageSquare className="w-4 h-4 text-[#C45439] shrink-0" />
+                <div>
+                  <span className="block text-[10px] text-[#A39E98] uppercase tracking-wider font-medium">WhatsApp Studio</span>
+                  <span className="font-semibold text-xs sm:text-sm">{siteConfig.whatsappDisplay}</span>
+                </div>
+              </a>
+
+              <a
+                href={siteConfig.instagramUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-3.5 p-3.5 bg-[#1A1918] border border-[#2A2826] hover:border-[#C45439] text-[#F7F4EE] transition-colors"
+              >
+                <InstagramIcon className="w-4 h-4 text-[#C45439] shrink-0" />
+                <div>
+                  <span className="block text-[10px] text-[#A39E98] uppercase tracking-wider font-medium">Instagram Resmi</span>
+                  <span className="font-semibold text-xs sm:text-sm">{siteConfig.instagramHandle}</span>
+                </div>
+              </a>
+            </div>
+          </div>
+
         </div>
 
-        {/* Footer Meta */}
-        <div className="pt-8 border-t border-[#EDE8DD]/14 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-xs text-[#EDE8DD]/60 uppercase">
+        {/* Bottom Colophon Bar */}
+        <div className="pt-8 border-t border-[#2A2826] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#A39E98]">
           <div>
-            <span>© {currentYear} {site.brand.toUpperCase()} — HAK CIPTA DILINDUNGI.</span>
+            <span>© {currentYear} {siteConfig.brand.toUpperCase()}. Seluruh hak cipta dilindungi.</span>
           </div>
 
-          <div className="flex items-center gap-6">
-            <span>DIBUAT UNTUK TUGAS KULIAH</span>
+          <div className="flex items-center gap-5">
+            <span className="hidden sm:inline font-serif italic text-xs">Profil Bisnis Elektronik · Studio Ilustrasi</span>
             <button
               type="button"
               onClick={scrollToTop}
-              aria-label="Kembali ke atas"
-              className="hover:text-[#EDE8DD] transition-colors"
+              className="flex items-center gap-1.5 hover:text-[#C45439] transition-colors focus:outline-none"
             >
-              [↑ KEMBALI KE ATAS]
+              <span>Kembali ke Atas</span>
+              <ArrowUp className="w-3.5 h-3.5" />
             </button>
           </div>
-        </div>
-
-        {/* Giant Cropped Wordmark Bleeding off bottom edge */}
-        <div
-          aria-hidden="true"
-          className="mt-12 text-center select-none overflow-hidden leading-none pointer-events-none"
-        >
-          <span className="font-condensed font-black text-[18vw] text-[#EDE8DD]/[0.04] tracking-tighter block uppercase -mb-[5vw]">
-            RAINFALL
-          </span>
         </div>
 
       </div>

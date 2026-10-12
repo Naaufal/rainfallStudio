@@ -1,19 +1,15 @@
 "use client";
 
-import { useState } from "react";
 import { PortfolioItem } from "@/types";
-import { StyleId, FramingId } from "@/data/site";
 import { ScrollProgress } from "./ScrollProgress";
 import { Navbar } from "./Navbar";
 import { Hero } from "./Hero";
-import { MarqueeTicker } from "./MarqueeTicker";
-import { StyleCards } from "./StyleCards";
-import { Pricing } from "./Pricing";
 import { Portfolio } from "./Portfolio";
+import { Services } from "./Services";
 import { Process } from "./Process";
-import { OrderForm } from "./OrderForm";
-import { Testimonials } from "./Testimonials";
+import { About } from "./About";
 import { Faq } from "./Faq";
+import { ClosingCta } from "./ClosingCta";
 import { Footer } from "./Footer";
 import { FloatingCta } from "./FloatingCta";
 
@@ -22,68 +18,41 @@ interface MainPageWrapperProps {
 }
 
 export function MainPageWrapper({ portfolioItems }: MainPageWrapperProps) {
-  const [selectedStyle, setSelectedStyle] = useState<StyleId>("normal");
-  const [selectedFraming, setSelectedFraming] = useState<FramingId>("headshot");
-
-  const handleSelectStyle = (styleId: StyleId) => {
-    setSelectedStyle(styleId);
-    const element = document.getElementById("pesan");
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
-  const handleSelectFraming = (framingId: FramingId) => {
-    setSelectedFraming(framingId);
-    const element = document.getElementById("pesan");
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
-  };
+  const normalSample =
+    portfolioItems.find((p) => p.style === "normal") || portfolioItems[0];
+  const gtaSample =
+    portfolioItems.find((p) => p.style === "gta") || portfolioItems[1];
 
   return (
-    <div className="relative min-h-screen bg-[#0D0C10] text-[#EDE8DD] selection:bg-[#EDE8DD] selection:text-[#0D0C10]">
-      
-      {/* Static Film Grain Overlay */}
-      <div className="film-grain" />
+    <div className="relative min-h-[100dvh] bg-[#121110] text-[#F7F4EE]">
+      {/* Subtle Archival Artist Paper Texture */}
+      <div className="artist-canvas-grain" />
 
-      {/* Flat 3px Bone Top Scroll Progress Bar */}
+      {/* Top Reading Scroll Progress Indicator */}
       <ScrollProgress />
 
-      {/* Flat Ink Header Navbar */}
+      {/* Sticky Masthead Navigation Bar */}
       <Navbar />
 
-      {/* Main One-Page Content */}
+      {/* Curated Editorial Page Flow */}
       <main className="relative z-10">
-        <Hero heroItems={portfolioItems} />
-        
-        {/* Slow Marquee Strip */}
-        <MarqueeTicker />
-
-        <StyleCards
-          portfolioItems={portfolioItems}
-          onSelectStyle={handleSelectStyle}
+        <Hero
+          heroItem={normalSample}
+          secondaryItem={gtaSample}
         />
-        <Pricing onSelectFraming={handleSelectFraming} />
         <Portfolio items={portfolioItems} />
+        <Services />
         <Process />
-        <OrderForm
-          selectedStyle={selectedStyle}
-          selectedFraming={selectedFraming}
-        />
-        <Testimonials />
+        <About />
         <Faq />
-        
-        {/* Slow Marquee Strip Bottom */}
-        <MarqueeTicker />
+        <ClosingCta />
       </main>
 
-      {/* Footer & Contacts */}
+      {/* Atelier Footer & Colophon */}
       <Footer />
 
-      {/* Floating CTA Button for Mobile */}
+      {/* Discreet Mobile Floating WhatsApp CTA */}
       <FloatingCta />
-
     </div>
   );
 }

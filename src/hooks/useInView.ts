@@ -14,16 +14,20 @@ export function useInView<T extends HTMLElement = HTMLDivElement>({
   triggerOnce = true,
 }: UseInViewOptions = {}) {
   const ref = useRef<T | null>(null);
-  const [isInView, setIsInView] = useState<boolean>(false);
+  const [isInView, setIsInView] = useState<boolean>(() => {
+    if (typeof window !== "undefined") {
+      return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    }
+    return false;
+  });
 
   useEffect(() => {
     const element = ref.current;
     if (!element) return;
 
-    // Check if prefers-reduced-motion is enabled
+    // If user prefers reduced motion, content is immediately visible
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     if (mediaQuery.matches) {
-      setIsInView(true);
       return;
     }
 

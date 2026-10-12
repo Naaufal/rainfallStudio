@@ -1,41 +1,28 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { useScrollY } from "@/hooks/useScrollY";
-import { ArrowRight } from "lucide-react";
+import { getWhatsAppUrl } from "@/data/site";
+import { MessageSquare } from "lucide-react";
 
 export function FloatingCta() {
   const { scrollY } = useScrollY();
-  const [isOrderFormInView, setIsOrderFormInView] = useState(false);
 
-  useEffect(() => {
-    const orderFormEl = document.getElementById("pesan");
-    if (!orderFormEl) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setIsOrderFormInView(entry.isIntersecting);
-      },
-      { threshold: 0.1 }
-    );
-
-    observer.observe(orderFormEl);
-    return () => observer.disconnect();
-  }, []);
-
-  const isPastHero = scrollY > 400;
-  const isVisible = isPastHero && !isOrderFormInView;
+  // Show after scrolling past Hero (e.g. 400px)
+  const isVisible = scrollY > 400;
 
   if (!isVisible) return null;
 
   return (
-    <div className="fixed bottom-6 right-4 z-40 md:hidden animate-fadeIn">
+    <div className="fixed bottom-5 right-4 z-40 sm:hidden">
       <a
-        href="#pesan"
-        className="btn-poster bg-[#EDE8DD] text-[#0D0C10] font-mono font-bold text-xs px-5 py-3 uppercase tracking-wider border border-[#0D0C10] flex items-center gap-2"
+        href={getWhatsAppUrl()}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Kirim pesan langsung ke WhatsApp Rainfall Studio"
+        className="btn-atelier px-4 py-3 bg-[#C45439] hover:bg-[#A83F27] text-[#FFFFFF] font-sans font-medium text-xs tracking-wider uppercase flex items-center gap-2 border border-[#C45439] shadow-2xl focus:outline-none focus:ring-2 focus:ring-[#F7F4EE]"
       >
-        <span>PESAN SEKARANG</span>
-        <ArrowRight className="w-3.5 h-3.5" />
+        <MessageSquare className="w-4 h-4" />
+        <span>Chat WA</span>
       </a>
     </div>
   );

@@ -2,20 +2,28 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { site } from "@/data/site";
+import { siteConfig, getWhatsAppUrl } from "@/data/site";
 import { useScrollDirection } from "@/hooks/useScrollDirection";
 import { useActiveSection } from "@/hooks/useActiveSection";
+import { MessageSquare, Menu, X, ArrowUpRight } from "lucide-react";
 
 const NAV_LINKS = [
-  { href: "#gaya", label: "GAYA", id: "gaya" },
-  { href: "#harga", label: "HARGA", id: "harga" },
-  { href: "#portofolio", label: "PORTOFOLIO", id: "portofolio" },
-  { href: "#cara-pesan", label: "ALUR", id: "cara-pesan" },
-  { href: "#testimoni", label: "TESTIMONI", id: "testimoni" },
+  { href: "#portofolio", label: "Karya", id: "portofolio" },
+  { href: "#layanan", label: "Tarif", id: "layanan" },
+  { href: "#alur", label: "Alur", id: "alur" },
+  { href: "#tentang", label: "Tentang", id: "tentang" },
   { href: "#faq", label: "FAQ", id: "faq" },
+  { href: "#kontak", label: "Kontak", id: "kontak" },
 ];
 
-const SECTION_IDS = ["gaya", "harga", "portofolio", "cara-pesan", "pesan", "testimoni", "faq"];
+const SECTION_IDS = [
+  "portofolio",
+  "layanan",
+  "alur",
+  "tentang",
+  "faq",
+  "kontak",
+];
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -24,7 +32,6 @@ export function Navbar() {
   const activeSection = useActiveSection(SECTION_IDS);
   const navRef = useRef<HTMLElement>(null);
 
-  // Close menu on ESC
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape" && isOpen) {
@@ -50,24 +57,30 @@ export function Navbar() {
       ref={navRef}
       onFocus={handleFocusIn}
       onBlur={handleFocusOut}
-      className={`fixed top-0 left-0 right-0 z-50 bg-[#0D0C10] border-b border-[#EDE8DD]/14 transition-transform duration-200 ${
-        shouldHideOnMobile ? "-translate-y-full pointer-events-none" : "translate-y-0 pointer-events-auto"
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-[#121110]/90 backdrop-blur-md border-b border-[#2A2826] ${
+        shouldHideOnMobile
+          ? "-translate-y-full pointer-events-none"
+          : "translate-y-0 pointer-events-auto"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-        
-        {/* Wordmark */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between">
+        {/* Brand Editorial Masthead */}
         <Link
           href="/"
-          className="font-condensed font-black text-2xl tracking-tighter text-[#EDE8DD] hover:text-[#A3A8C3] transition-colors focus:outline-none focus:ring-1 focus:ring-[#EDE8DD]"
+          className="group flex items-baseline gap-2.5 focus:outline-none focus:ring-1 focus:ring-[#C45439]"
         >
-          {site.brand.toUpperCase()}
+          <span className="font-display font-extrabold text-xl sm:text-2xl tracking-tight text-[#F7F4EE] group-hover:text-[#C45439] transition-colors">
+            RAINFALL
+          </span>
+          <span className="font-serif italic text-xs sm:text-sm text-[#A39E98] font-normal tracking-wide hidden xs:inline">
+            studio
+          </span>
         </Link>
 
-        {/* Desktop Nav Links */}
+        {/* Desktop Editorial Navigation */}
         <nav
           aria-label="Navigasi Utama"
-          className="hidden md:flex items-center gap-8 font-mono text-xs tracking-widest"
+          className="hidden md:flex items-center gap-7 text-xs tracking-wider uppercase font-medium"
         >
           {NAV_LINKS.map((link) => {
             const isActive = activeSection === link.id;
@@ -76,15 +89,15 @@ export function Navbar() {
                 key={link.id}
                 href={link.href}
                 aria-current={isActive ? "true" : undefined}
-                className={`transition-colors relative py-1 focus:outline-none focus:ring-1 focus:ring-[#EDE8DD] ${
+                className={`py-1.5 relative transition-colors focus:outline-none focus:ring-1 focus:ring-[#C45439] ${
                   isActive
-                    ? "text-[#A3A8C3] font-bold"
-                    : "text-[#EDE8DD]/60 hover:text-[#EDE8DD]"
+                    ? "text-[#F7F4EE] font-semibold"
+                    : "text-[#A39E98] hover:text-[#F7F4EE]"
                 }`}
               >
                 {link.label}
                 {isActive && (
-                  <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#A3A8C3]" />
+                  <span className="absolute bottom-0 left-0 right-0 h-[1.5px] bg-[#C45439]" />
                 )}
               </a>
             );
@@ -92,24 +105,27 @@ export function Navbar() {
         </nav>
 
         {/* Action Button & Mobile Toggle */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
           <a
-            href="#pesan"
-            className="btn-poster bg-[#EDE8DD] text-[#0D0C10] font-mono font-bold text-xs px-4 py-2 uppercase tracking-wider focus:outline-none focus:ring-1 focus:ring-[#EDE8DD]"
+            href={getWhatsAppUrl()}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-atelier hidden sm:inline-flex items-center gap-2 px-4 py-2 bg-[#C45439] hover:bg-[#A83F27] text-[#FFFFFF] font-sans font-medium text-xs tracking-wider uppercase border border-[#C45439] shadow-sm"
           >
-            PESAN
+            <MessageSquare className="w-3.5 h-3.5" />
+            <span>Pesan Karya</span>
           </a>
 
-          {/* Mobile menu button */}
+          {/* Mobile Menu Toggle */}
           <button
             type="button"
             onClick={() => setIsOpen(!isOpen)}
             aria-expanded={isOpen}
             aria-controls="mobile-menu"
-            aria-label={isOpen ? "Tutup menu" : "Buka menu navigasi"}
-            className="md:hidden px-3 py-1.5 border border-[#EDE8DD]/30 text-[#EDE8DD] font-mono text-xs uppercase focus:outline-none touch-manipulation select-none"
+            aria-label={isOpen ? "Tutup menu navigasi" : "Buka menu navigasi"}
+            className="md:hidden w-11 h-11 flex items-center justify-center border border-[#2A2826] bg-[#1A1918] text-[#F7F4EE] hover:text-[#C45439] focus:outline-none focus:ring-1 focus:ring-[#C45439] transition-colors"
           >
-            {isOpen ? "[X] CLOSE" : "[=] MENU"}
+            {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
         </div>
       </div>
@@ -118,24 +134,45 @@ export function Navbar() {
       {isOpen && (
         <div
           id="mobile-menu"
-          className="md:hidden bg-[#0D0C10] border-b border-[#EDE8DD]/20 px-6 py-6 font-mono text-sm space-y-3"
+          className="md:hidden bg-[#1A1918] border-b border-[#2A2826] px-5 py-6 space-y-4 animate-fadeIn"
         >
-          {NAV_LINKS.map((link) => {
-            const isActive = activeSection === link.id;
-            return (
-              <a
-                key={link.id}
-                href={link.href}
-                onClick={() => setIsOpen(false)}
-                aria-current={isActive ? "true" : undefined}
-                className={`block py-2 border-b border-[#EDE8DD]/10 transition-colors ${
-                  isActive ? "text-[#A3A8C3] font-bold pl-2 border-l-2 border-[#A3A8C3]" : "text-[#EDE8DD]/80"
-                }`}
-              >
-                {`// ${link.label}`}
-              </a>
-            );
-          })}
+          <div className="font-serif italic text-xs text-[#A39E98] pb-2 border-b border-[#2A2826]">
+            Eksplorasi Kurasi Studio
+          </div>
+          <div className="space-y-1">
+            {NAV_LINKS.map((link) => {
+              const isActive = activeSection === link.id;
+              return (
+                <a
+                  key={link.id}
+                  href={link.href}
+                  onClick={() => setIsOpen(false)}
+                  aria-current={isActive ? "true" : undefined}
+                  className={`block py-3 px-3 text-sm tracking-wide transition-colors border-b border-[#2A2826]/40 ${
+                    isActive
+                      ? "text-[#FFFFFF] font-semibold bg-[#242220] border-l-2 border-l-[#C45439]"
+                      : "text-[#A39E98] hover:text-[#F7F4EE]"
+                  }`}
+                >
+                  {link.label}
+                </a>
+              );
+            })}
+          </div>
+
+          <div className="pt-2">
+            <a
+              href={getWhatsAppUrl()}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setIsOpen(false)}
+              className="btn-atelier w-full py-3.5 px-4 bg-[#C45439] hover:bg-[#A83F27] text-[#FFFFFF] font-medium text-xs tracking-wider uppercase flex items-center justify-center gap-2 border border-[#C45439]"
+            >
+              <MessageSquare className="w-4 h-4" />
+              <span>Pesan via WhatsApp</span>
+              <ArrowUpRight className="w-4 h-4" />
+            </a>
+          </div>
         </div>
       )}
     </header>

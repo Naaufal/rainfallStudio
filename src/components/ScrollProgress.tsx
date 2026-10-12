@@ -8,10 +8,10 @@ export function ScrollProgress() {
   return (
     <div
       aria-hidden="true"
-      className="fixed top-0 left-0 right-0 h-[3px] z-[60] pointer-events-none bg-[#16151B]"
+      className="fixed top-0 left-0 right-0 h-[2px] z-[60] pointer-events-none bg-[#121110]"
     >
       <div
-        className="h-full bg-[#EDE8DD]"
+        className="h-full bg-[#C45439]"
         style={{
           transform: `scaleX(${scrollProgress})`,
           transformOrigin: "left",

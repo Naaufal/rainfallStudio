@@ -1,67 +1,62 @@
-import type { Metadata } from "next";
-import {
-  Oswald,
-  Playfair_Display,
-  Space_Grotesk,
-  DM_Mono,
-} from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Syne, Plus_Jakarta_Sans, Newsreader } from "next/font/google";
 import "./globals.css";
-import { site } from "@/data/site";
+import { siteConfig } from "@/data/site";
 
-const oswald = Oswald({
+const syne = Syne({
   subsets: ["latin"],
-  weight: ["700"],
-  variable: "--font-big-shoulders",
+  weight: ["500", "600", "700", "800"],
+  variable: "--font-syne",
   display: "swap",
 });
 
-const playfair = Playfair_Display({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-  style: ["normal", "italic"],
-  variable: "--font-instrument-serif",
-  display: "swap",
-});
-
-const spaceGrotesk = Space_Grotesk({
+const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
-  variable: "--font-familjen",
+  variable: "--font-sans",
   display: "swap",
 });
 
-const dmMono = DM_Mono({
+const newsreader = Newsreader({
   subsets: ["latin"],
-  weight: ["400", "500"],
-  variable: "--font-mono",
+  weight: ["400", "500", "600"],
+  style: ["normal", "italic"],
+  variable: "--font-serif",
   display: "swap",
 });
+
+export const viewport: Viewport = {
+  themeColor: "#121110",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+};
 
 export const metadata: Metadata = {
-  title: `${site.brand} — ${site.tagline}`,
-  description: site.subtagline,
+  title: `${siteConfig.brand} — Custom Vector Portrait & Face Tracing`,
+  description: siteConfig.subheadline,
   keywords: [
-    "vector art",
-    "tracing foto",
-    "kado ulang tahun",
+    "Rainfall Studio",
     "vector portrait",
-    "gta style art",
-    "foto profil unik",
-    "jasa ilustrasi foto",
+    "face tracing",
+    "custom portrait",
+    "semi realistic vector",
+    "kado personal",
+    "hadiah digital",
+    "ilustrasi wajah",
   ],
-  authors: [{ name: site.brand }],
+  authors: [{ name: siteConfig.brand }],
   openGraph: {
-    title: `${site.brand} — ${site.tagline}`,
-    description: site.subtagline,
-    url: "https://rainfallstudio.vercel.app",
-    siteName: site.brand,
+    title: `${siteConfig.brand} — Custom Semi-Realistic Vector Portrait`,
+    description: siteConfig.subheadline,
+    siteName: siteConfig.brand,
     locale: "id_ID",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: `${site.brand} — ${site.tagline}`,
-    description: site.subtagline,
+    title: `${siteConfig.brand} — Custom Semi-Realistic Vector Portrait`,
+    description: siteConfig.subheadline,
   },
   robots: {
     index: true,
@@ -77,12 +72,9 @@ export default function RootLayout({
   return (
     <html
       lang="id"
-      className={`${oswald.variable} ${playfair.variable} ${spaceGrotesk.variable} ${dmMono.variable}`}
+      className={`${syne.variable} ${plusJakartaSans.variable} ${newsreader.variable}`}
     >
-      <body className="bg-[#0D0C10] text-[#EDE8DD] font-sans antialiased selection:bg-[#EDE8DD] selection:text-[#0D0C10]">
-        <noscript>
-          <style>{`.clip-wipe-hidden { clip-path: none !important; opacity: 1 !important; }`}</style>
-        </noscript>
+      <body className="bg-[#121110] text-[#F7F4EE] antialiased selection:bg-[#C45439] selection:text-[#FFFFFF] font-sans">
         {children}
       </body>
     </html>

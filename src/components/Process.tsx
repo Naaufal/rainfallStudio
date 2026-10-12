@@ -1,132 +1,73 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { steps, site } from "@/data/site";
+import { processSteps } from "@/data/site";
+import { ArrowUpRight } from "lucide-react";
 
 export function Process() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const [sectionProgress, setSectionProgress] = useState(0);
-
-  useEffect(() => {
-    let ticking = false;
-    const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          if (!sectionRef.current) return;
-          const rect = sectionRef.current.getBoundingClientRect();
-          const vh = window.innerHeight;
-          // Progress 0 when top is at 85% of viewport, 1 when section top reaches 20%
-          const start = vh * 0.85;
-          const end = vh * 0.2;
-          const raw = (start - rect.top) / (start - end);
-          setSectionProgress(Math.min(Math.max(raw, 0), 1));
-          ticking = false;
-        });
-        ticking = true;
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  const dashOffset = Math.round(1000 * (1 - sectionProgress));
-
   return (
-    <section ref={sectionRef} id="cara-pesan" className="py-20 md:py-28 relative border-b border-[#EDE8DD]/14 scroll-mt-16">
-      
-      {/* Registration Cross Marks */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 relative">
-        <div className="reg-cross absolute top-0 left-4" />
-        <div className="reg-cross absolute top-0 right-4" />
-      </div>
-
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
+    <section id="alur" className="py-16 md:py-24 relative border-b border-[#2A2826] scroll-mt-20 bg-[#121110]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Header */}
-        <div className="mb-16 space-y-2">
-          <p className="font-mono text-xs tracking-widest text-[#EDE8DD]/60 uppercase">
-            NO. 04 — ALUR KERJA
-          </p>
-          <h2 className="font-condensed font-black text-4xl sm:text-6xl text-[#EDE8DD] uppercase tracking-tighter">
-            CARA PEMESANAN.
-          </h2>
-        </div>
-
-        {/* Bezier Path Container for Desktop */}
-        <div className="relative">
+        {/* Asymmetrical 2-Column Split: Sticky Header on Left, Sequential Step Ledger on Right */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
           
-          {/* Animated SVG Bezier Path (Desktop) */}
-          <svg
-            aria-hidden="true"
-            className="absolute top-12 left-0 right-0 w-full h-24 hidden lg:block pointer-events-none z-0 overflow-visible"
-            viewBox="0 0 1000 100"
-            fill="none"
-          >
-            {/* Background Path */}
-            <path
-              d="M 50,50 Q 250,-10 500,50 T 950,50"
-              stroke="rgba(237, 232, 221, 0.14)"
-              strokeWidth="2"
-            />
-            {/* Scroll Animated Path */}
-            <path
-              d="M 50,50 Q 250,-10 500,50 T 950,50"
-              stroke="#A3A8C3"
-              strokeWidth="2.5"
-              strokeDasharray="1000"
-              strokeDashoffset={dashOffset}
-              style={{ transition: "stroke-dashoffset 80ms ease-out" }}
-            />
-          </svg>
+          {/* Left Column: Section Title & Workflow Note */}
+          <div className="lg:col-span-5 lg:sticky lg:top-32 space-y-5">
+            <div className="flex items-center gap-2 text-xs text-[#A39E98] tracking-wider uppercase font-medium">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#C45439]" />
+              <span>Tahapan & Ketentuan Studio</span>
+            </div>
+            
+            <h2 className="font-display font-extrabold text-3xl sm:text-5xl text-[#F7F4EE] tracking-tight uppercase leading-[1.05]">
+              CARA PEMESANAN.
+            </h2>
+            
+            <p className="font-serif italic text-sm sm:text-base text-[#A39E98] leading-relaxed">
+              Tujuh langkah transparan dari pengiriman foto referensi hingga penyerahan karya akhir. Tidak ada sistem otomatisasi bot yang kaku — seluruh percakapan dilayani langsung oleh tim Rainfall Studio via WhatsApp.
+            </p>
 
-          {/* 4 Steps Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 relative z-10">
-            {steps.map((step, idx) => (
+            <div className="pt-6 border-t border-[#2A2826] text-xs text-[#A39E98] space-y-3 font-medium">
+              <div className="flex items-center gap-2.5">
+                <span className="text-[#C45439] font-bold">✓</span>
+                <span>Estimasi pengerjaan 24 jam setelah detail disepakati</span>
+              </div>
+              <div className="flex items-center gap-2.5">
+                <span className="text-[#C45439] font-bold">✓</span>
+                <span>Maksimal 3 kali revisi kecil (warna & garis)</span>
+              </div>
+              <div className="flex items-center gap-2.5">
+                <span className="text-[#C45439] font-bold">✓</span>
+                <span>Pembayaran aman & praktis melalui QRIS</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Column: Numbered Step Ledger */}
+          <div className="lg:col-span-7 border-t border-[#2A2826] divide-y divide-[#2A2826]">
+            {processSteps.map((step) => (
               <div
                 key={step.num}
-                className="bg-[#16151B] border border-[#EDE8DD]/14 p-6 flex flex-col justify-between space-y-6 relative"
+                className="py-6 sm:py-7 flex items-start gap-4 sm:gap-6 group hover:bg-[#1A1918]/60 transition-colors px-3 -mx-3"
               >
-                {/* Square Anchor Point Mark */}
-                <div className="w-3 h-3 bg-[#A3A8C3] border border-[#0D0C10] absolute -top-1.5 left-6" />
+                {/* Step Number in Serif Italic */}
+                <span className="font-serif italic text-xl sm:text-2xl text-[#C45439] shrink-0 pt-0.5 font-normal">
+                  {step.num}
+                </span>
 
-                <div className="space-y-4">
-                  {/* Giant Outlined Numerals */}
-                  <span className="font-condensed font-black text-6xl sm:text-7xl text-stroke text-[#EDE8DD]/30 block leading-none">
-                    {step.num}
-                  </span>
-
-                  {/* Step Title & Description */}
-                  <div className="space-y-2">
-                    <h3 className="font-mono font-bold text-sm tracking-wider text-[#EDE8DD] uppercase">
-                      {step.title}
-                    </h3>
-                    <p className="font-sans text-xs text-[#EDE8DD]/70 leading-relaxed">
-                      {step.description}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="pt-4 border-t border-[#EDE8DD]/14 font-mono text-[10px] text-[#A3A8C3]">
-                  {`// STEP 0${idx + 1}`}
+                {/* Step Details */}
+                <div className="space-y-1.5">
+                  <h3 className="font-display font-bold text-base sm:text-lg text-[#F7F4EE] uppercase tracking-tight group-hover:text-[#C45439] transition-colors flex items-center gap-2">
+                    <span>{step.title}</span>
+                    <ArrowUpRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity text-[#C45439]" />
+                  </h3>
+                  <p className="font-sans text-xs sm:text-sm text-[#A39E98] leading-relaxed">
+                    {step.description}
+                  </p>
                 </div>
               </div>
             ))}
           </div>
 
-        </div>
-
-        {/* Bottom Info Bar */}
-        <div className="mt-12 pt-6 border-t border-[#EDE8DD]/14 font-mono text-xs text-[#EDE8DD]/60 flex flex-wrap items-center justify-between gap-4 uppercase">
-          <div>
-            <span>ESTIMASI: </span>
-            <span className="text-[#EDE8DD] font-bold">{site.turnaround.toUpperCase()}</span>
-          </div>
-          <div>
-            <span>FORMAT: </span>
-            <span className="text-[#EDE8DD] font-bold">{site.fileFormats.join(" & ")} HD</span>
-          </div>
         </div>
 
       </div>

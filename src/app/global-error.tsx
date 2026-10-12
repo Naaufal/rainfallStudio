@@ -1,7 +1,6 @@
 'use client';
 
 export default function GlobalError({
-  error,
   reset,
 }: {
   error: Error & { digest?: string };
@@ -11,9 +10,9 @@ export default function GlobalError({
     <html lang="id">
       <body
         style={{
-          backgroundColor: '#0D0C10',
-          color: '#EDE8DD',
-          minHeight: '100vh',
+          backgroundColor: '#10131C',
+          color: '#F4F1EA',
+          minHeight: '100dvh',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -25,10 +24,10 @@ export default function GlobalError({
       >
         <div
           style={{
-            border: '1px solid rgba(237,232,221,0.2)',
+            border: '1px solid #343B4D',
             padding: '32px',
             maxWidth: '28rem',
-            backgroundColor: '#16151B',
+            backgroundColor: '#191E2B',
           }}
         >
           <h2 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '16px' }}>
@@ -40,8 +39,8 @@ export default function GlobalError({
           <button
             onClick={() => reset()}
             style={{
-              backgroundColor: '#EDE8DD',
-              color: '#0D0C10',
+              backgroundColor: '#AFC6EE',
+              color: '#10131C',
               fontWeight: 700,
               fontSize: '0.75rem',
               padding: '12px 24px',
